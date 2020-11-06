@@ -7,6 +7,10 @@ set autoindent
 
 set cindent
 
+set tabstop=8
+
+set softtabstop=4
+
 set shiftwidth=4
 
 set expandtab
@@ -14,8 +18,6 @@ set expandtab
 set clipboard=unnamedplus
 
 autocmd FileType make setlocal noexpandtab
-
-
 
 
 " set the runtime path to include Vundle and initialize
@@ -27,8 +29,18 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" https://github.com/tpope/vim-sensible
+" rainbow brackets
+Plugin 'https://github.com/frazrepo/vim-rainbow'
+
+" lightline
+Plugin 'https://github.com/itchyny/lightline.vim'
+
+
+" vim-sensible
 Plugin 'tpope/vim-sensible'
+
+"nerdtree
+Plugin 'preservim/nerdtree'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -41,6 +53,8 @@ runtime! plugin/sensible.vim
 set encoding=utf-8 fileencodings=
 syntax on
 
+" colorscheme onedark
+
 set number
 set cc=80
 
@@ -48,6 +62,13 @@ autocmd Filetype make setlocal noexpandtab
 
 set list listchars=tab:»·,trail:·
 
+" enable rainbow brackets
+let g:rainbow_active = 1
+
+"set lightline scheme
+let g:lightline = {
+     \ 'colorscheme': 'PaperColor_dark',
+      \ }
 
 " per .git vim configs
 " just `git config vim.settings "expandtab sw=4 sts=4"` in a git repository
@@ -56,5 +77,4 @@ let git_settings = system("git config --get vim.settings")
 if strlen(git_settings)
 	exe "set" git_settings
 endif
-
 
