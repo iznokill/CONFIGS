@@ -42,6 +42,9 @@ Plugin 'tpope/vim-sensible'
 "nerdtree
 Plugin 'preservim/nerdtree'
 
+"Clang-format
+Plugin 'https://github.com/rhysd/vim-clang-format'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -60,10 +63,14 @@ set cc=80
 
 autocmd Filetype make setlocal noexpandtab
 
+"autoenable clang-formating
+autocmd FileType c ClangFormatAutoEnable
+
 set list listchars=tab:»·,trail:·
 
 " enable rainbow brackets
 let g:rainbow_active = 1
+
 
 "set lightline scheme
 let g:lightline = {
