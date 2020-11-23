@@ -63,7 +63,7 @@ set cc=80
 
 autocmd Filetype make setlocal noexpandtab
 
-"autoenable clang-formating
+"auto enable clang-formating
 autocmd FileType c ClangFormatAutoEnable
 
 set list listchars=tab:»·,trail:·
