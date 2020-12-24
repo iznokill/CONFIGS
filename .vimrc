@@ -17,6 +17,10 @@ set expandtab
 
 set clipboard=unnamedplus
 
+syntax enable
+
+let python_highlight_all = 1
+
 autocmd FileType make setlocal noexpandtab
 
 
@@ -35,6 +39,9 @@ Plugin 'https://github.com/frazrepo/vim-rainbow'
 " lightline
 Plugin 'https://github.com/itchyny/lightline.vim'
 
+"isort sorts python imports
+Plugin 'fisadev/vim-isort'
+
 
 " vim-sensible
 Plugin 'tpope/vim-sensible'
@@ -42,7 +49,7 @@ Plugin 'tpope/vim-sensible'
 "nerdtree
 Plugin 'preservim/nerdtree'
 
-"Clang-format
+"Clang-format auto
 Plugin 'https://github.com/rhysd/vim-clang-format'
 
 " All of your Plugins must be added before the following line
@@ -78,10 +85,41 @@ let g:lightline = {
       \ }
 
 " per .git vim configs
+
 " just `git config vim.settings "expandtab sw=4 sts=4"` in a git repository
+
 " change syntax settings for this repository
 let git_settings = system("git config --get vim.settings")
 if strlen(git_settings)
 	exe "set" git_settings
 endif
 
+" key map nerdtree
+map <C-n> :NERDTreeFocus <CR>
+
+"show hiddenfiles nerdtree
+let NERDTreeShowHidden=1
+
+"enable kite for the following languages
+let g:kite_supported_languages = ['python', 'javascript', 'go']
+
+"set tab as the autocomplete button
+let g:kite_tab_complete=1
+
+"doc for kite
+let g:kite_documentation_continual=1
+nmap <silent> <buffer> gK <C-d>(kite-docs)
+
+
+"status bar with kite
+set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
+set laststatus=2
+
+
+" Highlight bad whitespace
+highlight BadWhitespace ctermbg=red guibg=red
+au BufRead,BufNewFile *.py match BadWhitespace /^\ \+/
+au BufRead,BufNewFile *.py match BadWhitespace /\s\+$/
+
+"isort for python version
+let g:vim_isort_python_version = 'python3'
