@@ -48,9 +48,25 @@ Plugin 'tpope/vim-sensible'
 
 "nerdtree
 Plugin 'preservim/nerdtree'
+"nerdtree tabs
+Bundle 'jistr/vim-nerdtree-tabs'
+
 
 "Clang-format auto
 Plugin 'https://github.com/rhysd/vim-clang-format'
+
+"execute python inside vim
+Plugin 'jpalardy/vim-slime'
+Plugin 'hanschen/vim-ipython-cell'
+
+"vim-repl
+Bundle 'sillybun/vim-repl'
+
+"jupiter-vim
+Plugin 'jupyter-vim/jupyter-vim'
+
+"ipython
+Plugin 'https://github.com/ivanov/vim-ipython'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -95,7 +111,10 @@ if strlen(git_settings)
 endif
 
 " key map nerdtree
-map <C-n> :NERDTreeFocus <CR>
+map <C-n> :NERDTreeTabsOpen  <CR>
+map <C-f> :NERDTreeTabsClose  <CR>
+
+
 
 "show hiddenfiles nerdtree
 let NERDTreeShowHidden=1
@@ -123,3 +142,18 @@ au BufRead,BufNewFile *.py match BadWhitespace /\s\+$/
 
 "isort for python version
 let g:vim_isort_python_version = 'python3'
+
+" Create a function to open a neovim terminal in a small split window and run python 
+function! Termpy()
+  exec winheight('%') winwidth('%')/4. "vsp" | terminal python3 %
+endfunction
+"set splitright
+
+function! Termqt()
+  exec winheight('%') winwidth('%')/4. "vsp" | terminal  %
+endfunction
+
+" Press F5 to run python script into separate term window 
+nnoremap <F5> :w <CR> :call Termqt() <CR>
+nnoremap <F6> :bd!<CR>
+
