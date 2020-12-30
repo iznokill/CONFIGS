@@ -19,6 +19,8 @@ set clipboard=unnamedplus
 
 syntax enable
 
+let g:mapleader=' '
+
 let python_highlight_all = 1
 
 autocmd FileType make setlocal noexpandtab
@@ -143,17 +145,80 @@ au BufRead,BufNewFile *.py match BadWhitespace /\s\+$/
 "isort for python version
 let g:vim_isort_python_version = 'python3'
 
-" Create a function to open a neovim terminal in a small split window and run python 
-function! Termpy()
-  exec winheight('%') winwidth('%')/4. "vsp" | terminal python3 %
+set splitright
+
+" vim REPL config
+let g:repl_position = 3 "repl on the right
+let g:repl_stayatrepl_when_open = 0 "return to current buffer
+let g:repl_cursor_down = 1
+let g:repl_python_automerge = 1 "auto send code
+let g:repl_console_name = 'FUCKING_WORK' "window name
+let g:repl_program = {
+            \   'python': 'python3',
+            \   'r': 'R',
+            \   'lua': 'lua',
+            \   'vim': 'vim -e',
+            \   }
+nnoremap <F4> :REPLToggle <CR>
+nnoremap <F6> :REPLHide<CR>
+
+"execute python 
+nnoremap <silent> <F5> :call SaveAndExecutePython()<CR>
+vnoremap <silent> <F5> :<C-u>call SaveAndExecutePython()<CR>
+
+function! SaveAndExecutePython()
+    " SOURCE [reusable window]: https://github.com/fatih/vim-go/blob/master/autoload/go/ui.vim
+
+    " save and reload current file
+    silent execute "update | edit"
+
+    " get file path of current file
+    let s:current_buffer_file_path = expand("%")
+
+    let s:output_buffer_name = "Python"
+    let s:output_buffer_filetype = "output"
+
+    " reuse existing buffer window if it exists otherwise create a new one
+    if !exists("s:buf_nr") || !bufexists(s:buf_nr)
+        silent execute 'right new ' . s:output_buffer_name
+        let s:buf_nr = bufnr('%')
+    elseif bufwinnr(s:buf_nr) == -1
+        silent execute 'right new'
+        silent execute s:buf_nr . 'buffer'
+    elseif bufwinnr(s:buf_nr) != bufwinnr('%')
+        silent execute bufwinnr(s:buf_nr) . 'wincmd w'
+    endif
+
+    silent execute "setlocal filetype=" . s:output_buffer_filetype
+    setlocal bufhidden=delete
+    setlocal buftype=nofile
+    setlocal noswapfile
+    setlocal nobuflisted
+    setlocal winfixheight
+    " setlocal cursorline " make it easy to distinguish
+    setlocal nonumber
+    setlocal norelativenumber
+    setlocal showbreak=""
+
+    " clear the buffer
+    setlocal noreadonly
+    setlocal modifiable
+    %delete _
+
+    " add the console output
+    silent execute ".!python3 " . shellescape(s:current_buffer_file_path, 1)
+
+    " resize window to content length
+    " Note: This is annoying because if you print a lot of lines then your code buffer is forced to a height of one line every time you run this function.
+    "       However without this line the buffer starts off as a default size and if you resize the buffer then it keeps that custom size after repeated runs of this function.
+    "       But if you close the output buffer then it returns to using the default size when its recreated
+    "execute 'resize' . line('$')
+
+    " make the buffer non modifiable
+    setlocal readonly
+    setlocal nomodifiable
+    if (line('$') == 1 && getline(1) == '')
+      q!
+    endif
+    silent execute 'wincmd p'
 endfunction
-"set splitright
-
-function! Termqt()
-  exec winheight('%') winwidth('%')/4. "vsp" | terminal  %
-endfunction
-
-" Press F5 to run python script into separate term window 
-nnoremap <F5> :w <CR> :call Termqt() <CR>
-nnoremap <F6> :bd!<CR>
-
