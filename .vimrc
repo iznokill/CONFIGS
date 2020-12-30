@@ -23,6 +23,7 @@ let g:mapleader=' '
 
 let python_highlight_all = 1
 
+
 autocmd FileType make setlocal noexpandtab
 
 
@@ -69,6 +70,9 @@ Plugin 'jupyter-vim/jupyter-vim'
 
 "ipython
 Plugin 'https://github.com/ivanov/vim-ipython'
+
+"autoformat python code
+Plugin 'Chiel92/vim-autoformat'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -142,30 +146,12 @@ highlight BadWhitespace ctermbg=red guibg=red
 au BufRead,BufNewFile *.py match BadWhitespace /^\ \+/
 au BufRead,BufNewFile *.py match BadWhitespace /\s\+$/
 
-"isort for python version
-let g:vim_isort_python_version = 'python3'
-
-set splitright
-
-" vim REPL config
-let g:repl_position = 3 "repl on the right
-let g:repl_stayatrepl_when_open = 0 "return to current buffer
-let g:repl_cursor_down = 1
-let g:repl_python_automerge = 1 "auto send code
-let g:repl_console_name = 'FUCKING_WORK' "window name
-let g:repl_program = {
-            \   'python': 'python3',
-            \   'r': 'R',
-            \   'lua': 'lua',
-            \   'vim': 'vim -e',
-            \   }
-nnoremap <F4> :REPLToggle <CR>
-nnoremap <F6> :REPLHide<CR>
-
 "execute python 
 nnoremap <silent> <F5> :call SaveAndExecutePython()<CR>
 vnoremap <silent> <F5> :<C-u>call SaveAndExecutePython()<CR>
 
+" CREDIT: https://gist.github.com/vishnubob/c93b1bdc3d5df64a8bc29246adfa8c6c
+" https://stackoverflow.com/questions/18948491/running-python-code-in-vim
 function! SaveAndExecutePython()
     " SOURCE [reusable window]: https://github.com/fatih/vim-go/blob/master/autoload/go/ui.vim
 
@@ -180,10 +166,10 @@ function! SaveAndExecutePython()
 
     " reuse existing buffer window if it exists otherwise create a new one
     if !exists("s:buf_nr") || !bufexists(s:buf_nr)
-        silent execute 'right new ' . s:output_buffer_name
+        silent execute 'botright vsplit new ' . s:output_buffer_name
         let s:buf_nr = bufnr('%')
     elseif bufwinnr(s:buf_nr) == -1
-        silent execute 'right new'
+        silent execute 'botright vsplit new'
         silent execute s:buf_nr . 'buffer'
     elseif bufwinnr(s:buf_nr) != bufwinnr('%')
         silent execute bufwinnr(s:buf_nr) . 'wincmd w'
@@ -222,3 +208,5 @@ function! SaveAndExecutePython()
     endif
     silent execute 'wincmd p'
 endfunction
+
+au BufWrite * :Autoformat
