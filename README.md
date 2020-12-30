@@ -1,4 +1,5 @@
 # CONFIGS
+
 This is the most basic .vimrc you could have that works for both c files and Makefiles.
 Do this !!!!!!!!!!:
 
@@ -15,8 +16,6 @@ Set up Vundle:
 
  my vimrc contains a plugin that automatically clang-formats your .c files
  you should copy Clang/.clang-format to $HOME to have it work correctly
-
-
 
 
  ENJOY!!!
