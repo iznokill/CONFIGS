@@ -15,80 +15,52 @@ set shiftwidth=4
 
 set expandtab
 
+set number
+
+set cc=80
+
 set clipboard=unnamedplus
 
 syntax enable
 
-let g:mapleader=' '
-
-let python_highlight_all = 1
+"let python_highlight_all = 1
 
 
 autocmd FileType make setlocal noexpandtab
 
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
+call plug#begin()
 " rainbow brackets
-Plugin 'https://github.com/frazrepo/vim-rainbow'
+Plug 'https://github.com/frazrepo/vim-rainbow'
 
 " lightline
-Plugin 'https://github.com/itchyny/lightline.vim'
+Plug 'https://github.com/itchyny/lightline.vim'
 
 "isort sorts python imports
-Plugin 'fisadev/vim-isort'
-
-
-" vim-sensible
-Plugin 'tpope/vim-sensible'
+Plug 'fisadev/vim-isort'
 
 "nerdtree
-Plugin 'preservim/nerdtree'
-"nerdtree tabs
-Bundle 'jistr/vim-nerdtree-tabs'
+Plug 'preservim/nerdtree'
 
+"nerdtree tabs
+Plug 'https://github.com/jistr/vim-nerdtree-tabs'
 
 "Clang-format auto
-Plugin 'https://github.com/rhysd/vim-clang-format'
-
-"execute python inside vim
-Plugin 'jpalardy/vim-slime'
-Plugin 'hanschen/vim-ipython-cell'
-
-"vim-repl
-Bundle 'sillybun/vim-repl'
+Plug 'https://github.com/rhysd/vim-clang-format'
 
 "jupiter-vim
-Plugin 'jupyter-vim/jupyter-vim'
-
-"ipython
-Plugin 'https://github.com/ivanov/vim-ipython'
+Plug 'jupyter-vim/jupyter-vim'
 
 "autoformat python code
-Plugin 'Chiel92/vim-autoformat'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
+Plug 'Chiel92/vim-autoformat'
+"autocomplete
+Plug 'zxqfl/tabnine-vim'
+call plug#end()
+filetype plugin indent on
 
 runtime! plugin/sensible.vim
 
 set encoding=utf-8 fileencodings=
 syntax on
-
-" colorscheme onedark
-
-set number
-set cc=80
 
 autocmd Filetype make setlocal noexpandtab
 
@@ -103,8 +75,8 @@ let g:rainbow_active = 1
 
 "set lightline scheme
 let g:lightline = {
-     \ 'colorscheme': 'PaperColor_dark',
-      \ }
+            \ 'colorscheme': 'PaperColor_dark',
+            \ }
 
 " per .git vim configs
 
@@ -113,32 +85,20 @@ let g:lightline = {
 " change syntax settings for this repository
 let git_settings = system("git config --get vim.settings")
 if strlen(git_settings)
-	exe "set" git_settings
+    exe "set" git_settings
 endif
 
 " key map nerdtree
-map <C-n> :NERDTreeTabsOpen  <CR>
-map <C-f> :NERDTreeTabsClose  <CR>
-
-
+map <C-n> <plug>NERDTreeTabsOpen<CR>
+map <C-f> <plug>NERDTreeTabsClose<CR>
 
 "show hiddenfiles nerdtree
 let NERDTreeShowHidden=1
 
 "enable kite for the following languages
 let g:kite_supported_languages = ['python', 'javascript', 'go']
-
 "set tab as the autocomplete button
 let g:kite_tab_complete=1
-
-"doc for kite
-let g:kite_documentation_continual=1
-nmap <silent> <buffer> gK <C-d>(kite-docs)
-
-
-"status bar with kite
-set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
-set laststatus=2
 
 
 " Highlight bad whitespace
@@ -146,7 +106,7 @@ highlight BadWhitespace ctermbg=red guibg=red
 au BufRead,BufNewFile *.py match BadWhitespace /^\ \+/
 au BufRead,BufNewFile *.py match BadWhitespace /\s\+$/
 
-"execute python 
+"execute python
 nnoremap <silent> <F5> :call SaveAndExecutePython()<CR>
 vnoremap <silent> <F5> :<C-u>call SaveAndExecutePython()<CR>
 
@@ -192,7 +152,7 @@ function! SaveAndExecutePython()
     %delete _
 
     " add the console output
-    silent execute ".!python3 " . shellescape(s:current_buffer_file_path, 1)
+    silent execute ".!python " . shellescape(s:current_buffer_file_path, 1)
 
     " resize window to content length
     " Note: This is annoying because if you print a lot of lines then your code buffer is forced to a height of one line every time you run this function.
@@ -204,7 +164,7 @@ function! SaveAndExecutePython()
     setlocal readonly
     setlocal nomodifiable
     if (line('$') == 1 && getline(1) == '')
-      q!
+        q!
     endif
     silent execute 'wincmd p'
 endfunction
