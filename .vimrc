@@ -23,7 +23,7 @@ set clipboard=unnamedplus
 
 syntax enable
 
-"let python_highlight_all = 1
+let python_highlight_all = 1
 
 
 autocmd FileType make setlocal noexpandtab
@@ -52,8 +52,10 @@ Plug 'jupyter-vim/jupyter-vim'
 
 "autoformat python code
 Plug 'Chiel92/vim-autoformat'
+
 "autocomplete
 Plug 'zxqfl/tabnine-vim'
+
 call plug#end()
 filetype plugin indent on
 
