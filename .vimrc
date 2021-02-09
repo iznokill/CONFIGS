@@ -97,10 +97,6 @@ let g:lightline = {
     map <C-n> <plug>NERDTreeTabsOpen<CR>
     map <C-f> <plug>NERDTreeTabsClose<CR>
 
-    "show hiddenfiles nerdtree
-    let NERDTreeShowHidden=1
-
-
 
     " Highlight bad whitespace
     highlight BadWhitespace ctermbg=red guibg=red
