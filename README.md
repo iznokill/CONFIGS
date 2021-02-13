@@ -7,8 +7,7 @@ Do this !!!!!!!!!!:
 
 Set up Vundle:
 
-2 - ```curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim```
+2 - ```curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim```
 
       3 - launch vim and do < :PlugInstall > to install plugins
 
