@@ -29,6 +29,7 @@ let python_highlight_all = 1
 
 autocmd FileType make setlocal noexpandtab
 
+
 call plug#begin()
 " rainbow brackets
 Plug 'frazrepo/vim-rainbow'
@@ -113,7 +114,6 @@ au BufRead,BufNewFile *.py match BadWhitespace /\s\+$/
 nnoremap <silent> <F5> :call SaveAndExecutePython()<CR>
 vnoremap <silent> <F5> :<C-u>call SaveAndExecutePython()<CR>
 
-" CREDIT: https://gist.github.com/vishnubob/c93b1bdc3d5df64a8bc29246adfa8c6c
 " https://stackoverflow.com/questions/18948491/running-python-code-in-vim
 function! SaveAndExecutePython()
     " SOURCE [reusable window]: https://github.com/fatih/vim-go/blob/master/autoload/go/ui.vim
@@ -167,7 +167,7 @@ function! SaveAndExecutePython()
     setlocal readonly
     setlocal nomodifiable
     if (line('$') == 1 && getline(1) == '')
-        q!
+      q!
     endif
     silent execute 'wincmd p'
 endfunction
@@ -179,8 +179,7 @@ au BufWrite *.py :Autoformat
 au BufWrite *.c :Autoformat
 au BufWrite *.h :Autoformat
 au BufWrite *.yaml :YAMLFormat
-
-
+au BufWrite *.json :%!python -m json.tool
 
 
 
